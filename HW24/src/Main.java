@@ -10,6 +10,7 @@ public class Main {
     private static final String EXIT_COMMAND = "EXIT";
 
     private static Map<String, Set<String>> namesToNumbers = new TreeMap<>();
+
     public static void main(String[] args) {
         while (true) {
             String input = getInput();
@@ -26,14 +27,14 @@ public class Main {
         }
     }
 
-    public static String getInput(){
+    public static String getInput() {
         System.out.println("\nВведите номер телефона, имя контакта, команду LIST или EXIT");
         return new Scanner(System.in).nextLine().trim();
     }
 
-    public static void handleInputName(String name){
-        if(!namesToNumbers.containsKey(name)) {
-            System.out.println("Такого имени в телефонной книге еще нет.\nВведите номер телефона для абонента \"" + name +"\": ");
+    public static void handleInputName(String name) {
+        if (!namesToNumbers.containsKey(name)) {
+            System.out.println("Такого имени в телефонной книге еще нет.\nВведите номер телефона для абонента \"" + name + "\": ");
             Set<String> numbers = new HashSet<>();
             do {
                 String input = new Scanner(System.in).nextLine().trim();
@@ -44,28 +45,19 @@ public class Main {
                     return;
                 }
                 System.out.println("Это не номер телефона, введите правильный номер: ");
-            }while(true);
+            } while (true);
         }
-       for (String number : namesToNumbers.get(name))
-         System.out.println(number);
+        for (String number : namesToNumbers.get(name))
+            System.out.println(number);
     }
 
-    public static void handleInputNumber(String number){
+    public static void handleInputNumber(String number) {
         String formattedNumber = formatNumber(number);
-        boolean isContained = false;
-        String name = "";
         for (Map.Entry<String, Set<String>> entry : namesToNumbers.entrySet())
-            for (String value : entry.getValue()){
-                if (value.equals(formattedNumber)){
-                    isContained = true;
-                    name = entry.getKey();
-                    break;
-                }
+            if (entry.getValue().contains(formattedNumber)) {
+                System.out.println(entry.getKey());
+                return;
             }
-        if (isContained) {
-            System.out.println(name);
-            return;
-        }
 
         System.out.println("Такого номера в телефонной книге еще нет.\nВведите имя абонента для номера \"" + formattedNumber +"\": ");
         do {
